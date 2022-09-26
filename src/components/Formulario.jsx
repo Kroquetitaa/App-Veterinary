@@ -11,7 +11,7 @@ export default class Formulario extends Component {
           Añade pacientes y {""}{" "}
           <span className="text-indigo-600 font-bold">Administralos</span>
         </p>
-        <form className="bg-white shadow-md rounded-lg py-10 px-5 mb-10">
+        <form className="bg-white shadow-md rounded-xl py-10 px-5 mb-10">
           <div className="mb-5">
             <label
               htmlFor="mascota"
