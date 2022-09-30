@@ -1,17 +1,36 @@
 import { useState, useEffect } from "react";
 
-const Formulario = () => {
+const Formulario = ({pacientes, setPacientes}) => {
   const [nombre, setNombre] = useState("");
-  const [propietario, setPropietario ] = useState("");
-  const [email, setEmail ] = useState("");
-  const [fecha, setFecha ] = useState("");
-  const [sintomas, setSintomas ] = useState("");
+  const [propietario, setPropietario] = useState("");
+  const [email, setEmail] = useState("");
+  const [fecha, setFecha] = useState("");
+  const [sintomas, setSintomas] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if ([nombre, propietario, email, fecha, sintomas].includes("")) {
+      console.log("Hay al menos un campo vacio");
+      setError(true);
+      return;
+    } 
+    setError(false)
 
-    console.log('Enviando formulario');
-  }
+    const objetoPaciente = {
+      nombre,
+      propietario,
+      email,
+      fecha,
+      sintomas,
+    }
+    setPacientes([...pacientes, objetoPaciente]);
+      setNombre('');
+      setPropietario('');
+      setEmail('');
+      setFecha('');
+      setSintomas('');
+  };
 
   return (
     <div className="md:w-1/2 lg:w-2/5">
@@ -20,7 +39,15 @@ const Formulario = () => {
         Añade pacientes y{" "}
         <span className="text-indigo-600 font-bold">Administralos</span>
       </p>
-      <form className="bg-white shadow-md rounded-xl py-10 px-5 mb-10" onSubmit={ handleSubmit }>
+      <form
+        className="bg-white shadow-md rounded-xl py-10 px-5 mb-10"
+        onSubmit={handleSubmit}
+      >
+        {error && (
+          <div className="bg-red-800 text-white text-center p-3 uppercase font-bold mb-3 rounded-md">
+            <p>Todos los campos son obligatorios</p>
+          </div>
+        )}
         <div className="mb-5">
           <label
             htmlFor="mascota"
@@ -34,7 +61,7 @@ const Formulario = () => {
             placeholder="Nombre de la mascota"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={nombre}
-            onChange={ e => setNombre(e.target.value)}
+            onChange={(e) => setNombre(e.target.value)}
           />
         </div>
         <div className="mb-5">
@@ -50,7 +77,7 @@ const Formulario = () => {
             placeholder="Nombre del propietario"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={propietario}
-            onChange={ e => setPropietario(e.target.value)}
+            onChange={(e) => setPropietario(e.target.value)}
           />
         </div>
         <div className="mb-5">
@@ -66,7 +93,7 @@ const Formulario = () => {
             placeholder="Email contacto propietario"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={email}
-            onChange={ e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className="mb-5">
@@ -81,7 +108,7 @@ const Formulario = () => {
             type="date"
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={fecha}
-            onChange={ e => setFecha(e.target.value)}
+            onChange={(e) => setFecha(e.target.value)}
           />
         </div>
         <div className="mb-5">
@@ -96,7 +123,7 @@ const Formulario = () => {
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             placeholder="Describe los sintomas"
             value={sintomas}
-            onChange={ e => setSintomas(e.target.value)}
+            onChange={(e) => setSintomas(e.target.value)}
           />
         </div>
         <input
