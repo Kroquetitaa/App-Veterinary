@@ -1,12 +1,31 @@
 import { useState, useEffect } from "react";
+import Error from "./Error";
 
-const Formulario = ({pacientes, setPacientes}) => {
+const Formulario = ({pacientes, setPacientes, paciente}) => {
   const [nombre, setNombre] = useState("");
   const [propietario, setPropietario] = useState("");
   const [email, setEmail] = useState("");
   const [fecha, setFecha] = useState("");
   const [sintomas, setSintomas] = useState("");
   const [error, setError] = useState(false);
+
+  useEffect( () => {
+    if(Object.keys(paciente).length > 0){
+      const { nombre, propietario, email, fecha, sintomas } = paciente;
+      setNombre(nombre);
+      setPropietario(propietario);
+      setEmail(email);
+      setFecha(fecha);
+      setSintomas(sintomas);
+    }
+  }, [paciente]);
+
+
+  const generarID = () =>{
+    const random = Math.random().toString(36).substr(2);
+    const fecha = Date.now().toString(36);
+    return random + fecha;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,6 +42,7 @@ const Formulario = ({pacientes, setPacientes}) => {
       email,
       fecha,
       sintomas,
+      id: generarID(),
     }
     setPacientes([...pacientes, objetoPaciente]);
       setNombre('');
@@ -44,9 +64,7 @@ const Formulario = ({pacientes, setPacientes}) => {
         onSubmit={handleSubmit}
       >
         {error && (
-          <div className="bg-red-800 text-white text-center p-3 uppercase font-bold mb-3 rounded-md">
-            <p>Todos los campos son obligatorios</p>
-          </div>
+          <Error><p>Todos los campos son obligatorios</p></Error>
         )}
         <div className="mb-5">
           <label
@@ -129,7 +147,7 @@ const Formulario = ({pacientes, setPacientes}) => {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-3 rounded-md text-white font-bold cursor-pointer uppercase hover:bg-indigo-700"
-          value="Agregar paciente"
+          value={paciente.id ? 'Editar paciente' : 'Agregar paciente'}
         />
       </form>
     </div>
